@@ -30,3 +30,5 @@
 -keepclasseswithmembers class * {
     @androidx.annotation.Keep <init>(...);
 }
+-keep class javax.lang.model.** { *; }
+-dontwarn javax.lang.model.element.Modifier
