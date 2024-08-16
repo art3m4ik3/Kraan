@@ -14,6 +14,7 @@ import ru.art3m4ik3.kraan.databinding.FragmentMainScreenBinding
 
 class MainScreenFragment : Fragment() {
     private lateinit var binding: FragmentMainScreenBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
