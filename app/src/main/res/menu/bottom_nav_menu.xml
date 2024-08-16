@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_main"
+        android:title="Главная"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/navigation_products"
+        android:title="Товары"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/navigation_contacts"
+        android:title="Контакты"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/navigation_login"
+        android:title="Войти"
+        android:visible="true"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/navigation_logout"
+        android:title="Выйти"
+        android:visible="true"
+        app:showAsAction="always" />
+</menu>
