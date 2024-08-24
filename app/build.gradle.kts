@@ -45,6 +45,8 @@ android {
 
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs.v203)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

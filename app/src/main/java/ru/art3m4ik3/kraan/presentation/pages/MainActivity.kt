@@ -38,6 +38,12 @@ class MainActivity : AppCompatActivity() {
                         .replace(binding.fragmentContainer.id, ProductsScreenFragment())
                         .commit()
                 }
+
+                R.id.navigation_contacts -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(binding.fragmentContainer.id, ContactScreenFragment())
+                        .commit()
+                }
             }
 
             true
