@@ -13,7 +13,8 @@ import ru.art3m4ik3.kraan.databinding.FragmentProductsScreenBinding
 import ru.art3m4ik3.kraan.presentation.adapters.ProductsAdapter
 
 class ProductsScreenFragment : Fragment() {
-    private lateinit var binding: FragmentProductsScreenBinding
+    private var _binding: FragmentProductsScreenBinding? = null
+    private val binding get() = _binding!!
     private lateinit var adapter: ProductsAdapter
     private lateinit var addButton: Button
     private lateinit var recyclerView: RecyclerView
@@ -22,7 +23,7 @@ class ProductsScreenFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentProductsScreenBinding.inflate(inflater, container, false)
+        _binding = FragmentProductsScreenBinding.inflate(inflater, container, false)
 
         recyclerView = binding.recyclerViewProducts
         addButton = binding.buttonAddProduct
@@ -45,6 +46,11 @@ class ProductsScreenFragment : Fragment() {
         loadProducts()
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun loadProducts() {

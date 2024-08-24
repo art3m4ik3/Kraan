@@ -12,7 +12,6 @@ import android.widget.Toast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.art3m4ik3.kraan.R
 import ru.art3m4ik3.kraan.data.models.Message
 import ru.art3m4ik3.kraan.data.storage.RetrofitHelper
 import ru.art3m4ik3.kraan.databinding.FragmentContactScreenBinding
@@ -20,13 +19,14 @@ import java.util.regex.Pattern
 
 
 class ContactScreenFragment : Fragment() {
-    lateinit var binding: FragmentContactScreenBinding
+    private var _binding: FragmentContactScreenBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentContactScreenBinding.inflate(inflater, container, false)
+        _binding = FragmentContactScreenBinding.inflate(inflater, container, false)
 
         binding.emailEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -58,6 +58,11 @@ class ContactScreenFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun send() {

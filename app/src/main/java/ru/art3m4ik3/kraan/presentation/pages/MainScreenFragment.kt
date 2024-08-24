@@ -13,12 +13,13 @@ import ru.art3m4ik3.kraan.R
 import ru.art3m4ik3.kraan.databinding.FragmentMainScreenBinding
 
 class MainScreenFragment : Fragment() {
-    private lateinit var binding: FragmentMainScreenBinding
+    private var _binding: FragmentMainScreenBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMainScreenBinding.inflate(inflater, container, false)
+        _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
 
         setCompanyInfo()
         setFeatures(
@@ -30,6 +31,11 @@ class MainScreenFragment : Fragment() {
         )
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setCompanyInfo() {

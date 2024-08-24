@@ -6,11 +6,12 @@ import ru.art3m4ik3.kraan.R
 import ru.art3m4ik3.kraan.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // TODO: get auth data from api
@@ -26,6 +27,10 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
         binding.bottomNavigationView.setOnItemSelectedListener {
+            if (it.itemId == binding.bottomNavigationView.selectedItemId) {
+                return@setOnItemSelectedListener true
+            }
+
             when (it.itemId) {
                 R.id.navigation_main -> {
                     supportFragmentManager.beginTransaction()
@@ -48,5 +53,10 @@ class MainActivity : AppCompatActivity() {
 
             true
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
