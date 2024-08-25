@@ -1,6 +1,8 @@
 package ru.art3m4ik3.kraan.presentation.pages
 
+import android.content.Context
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import ru.art3m4ik3.kraan.R
 import ru.art3m4ik3.kraan.databinding.ActivityMainBinding
@@ -15,7 +17,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // TODO: get auth data from api
-        val authorized = true
+        val authorized = false
+        // isTokenValid()
         if (authorized) {
             binding.bottomNavigationView.menu.removeItem(R.id.navigation_login)
         } else {
@@ -49,6 +52,12 @@ class MainActivity : AppCompatActivity() {
                         .replace(binding.fragmentContainer.id, ContactScreenFragment())
                         .commit()
                 }
+
+                R.id.navigation_login -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(binding.fragmentContainer.id, LoginScreenFragment())
+                        .commit()
+                }
             }
 
             true
@@ -58,5 +67,22 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    fun isTokenValid(): Boolean {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val token = sharedPref.getString("AUTH_TOKEN", null)
+
+        // TODO: get auth data from api
+
+        return token != null
+    }
+
+    fun openLoginFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, LoginScreenFragment())
+            .commit()
+
+        binding.bottomNavigationView.setSelectedItemId(R.id.navigation_login)
     }
 }

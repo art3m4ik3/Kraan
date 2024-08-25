@@ -1,14 +1,15 @@
 package ru.art3m4ik3.kraan.presentation.pages
 
+import android.R
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,13 +29,27 @@ class ContactScreenFragment : Fragment() {
     ): View? {
         _binding = FragmentContactScreenBinding.inflate(inflater, container, false)
 
+        binding.messageEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                validateInput()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        binding.nameEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                validateInput()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
         binding.emailEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (isValidEmail(s.toString().trim())) {
-                    binding.errorTextView.visibility = View.GONE
-                } else {
-                    showError("Неверный email.")
-                }
+                validateInput()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -46,11 +61,12 @@ class ContactScreenFragment : Fragment() {
         }
 
         binding.loginButton.setOnClickListener {
-            login()
+            val activity = activity as? MainActivity
+            activity?.openLoginFragment()
         }
 
         // TODO: get auth data from api
-        val authorized = true
+        val authorized = false
         if (authorized) {
             binding.loginButton.visibility = View.GONE
         } else {
@@ -65,20 +81,37 @@ class ContactScreenFragment : Fragment() {
         _binding = null
     }
 
-    private fun send() {
+    private fun validateInput(): Boolean {
+        binding.errorTextView.visibility = View.GONE
+
         val name = binding.nameEditText.text.toString().trim()
         val email = binding.emailEditText.text.toString().trim()
         val message = binding.messageEditText.text.toString().trim()
 
         if (name.isEmpty() || email.isEmpty() || message.isEmpty()) {
             showError("Все поля должны быть заполнены.")
+            return false
+        }
+
+        val emailRegex = "^[A-Za-z0-9]+\\.[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z]{2,}$"
+        val pattern = Pattern.compile(emailRegex)
+
+        if (!pattern.matcher(email).matches()) {
+            showError("Неверный формат email.")
+            return false
+        }
+
+        return true
+    }
+
+    private fun send() {
+        if (!validateInput()) {
             return
         }
 
-        if (!isValidEmail(email)) {
-            showError("Неверный email.")
-            return
-        }
+        val name = binding.nameEditText.text.toString().trim()
+        val email = binding.emailEditText.text.toString().trim()
+        val message = binding.messageEditText.text.toString().trim()
 
         binding.errorTextView.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
@@ -111,19 +144,8 @@ class ContactScreenFragment : Fragment() {
         })
     }
 
-    private fun login() {
-        // TODO: open login screen
-    }
-
     private fun showError(message: String) {
         binding.errorTextView.text = message
         binding.errorTextView.visibility = View.VISIBLE
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        val emailRegex = "^[A-Za-z0-9]+\\.[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z]{2,}$"
-        val pattern = Pattern.compile(emailRegex)
-
-        return pattern.matcher(email).matches()
     }
 }
