@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // TODO: get auth data from api
-        val authorized = false
+        val authorized = true
         // isTokenValid()
         if (authorized) {
             binding.bottomNavigationView.menu.removeItem(R.id.navigation_login)
@@ -54,6 +54,12 @@ class MainActivity : AppCompatActivity() {
                         .replace(binding.fragmentContainer.id, LoginScreenFragment())
                         .commit()
                 }
+
+                R.id.navigation_logout -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(binding.fragmentContainer.id, LogoutScreenFragment())
+                        .commit()
+                }
             }
 
             true
@@ -86,5 +92,13 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, AddProductScreenFragment())
             .commit()
+    }
+
+    fun openMainFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, MainScreenFragment())
+            .commit()
+
+        binding.bottomNavigationView.setSelectedItemId(R.id.navigation_main)
     }
 }
