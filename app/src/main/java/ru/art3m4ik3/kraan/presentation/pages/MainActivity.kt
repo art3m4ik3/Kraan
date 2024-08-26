@@ -30,10 +30,6 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
         binding.bottomNavigationView.setOnItemSelectedListener {
-            if (it.itemId == binding.bottomNavigationView.selectedItemId) {
-                return@setOnItemSelectedListener true
-            }
-
             when (it.itemId) {
                 R.id.navigation_main -> {
                     supportFragmentManager.beginTransaction()
@@ -84,5 +80,11 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
         binding.bottomNavigationView.setSelectedItemId(R.id.navigation_login)
+    }
+
+    fun openAddProductFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, AddProductScreenFragment())
+            .commit()
     }
 }

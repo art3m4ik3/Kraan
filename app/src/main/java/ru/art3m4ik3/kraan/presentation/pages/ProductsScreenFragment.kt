@@ -1,6 +1,7 @@
 package ru.art3m4ik3.kraan.presentation.pages
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +38,8 @@ class ProductsScreenFragment : Fragment() {
         if (authorized) {
             addButton.visibility = View.VISIBLE
             addButton.setOnClickListener {
-                // TODO: open AddProductScreen fragment
+                val activity = activity as? MainActivity
+                activity?.openAddProductFragment()
             }
         } else {
             addButton.visibility = View.GONE
