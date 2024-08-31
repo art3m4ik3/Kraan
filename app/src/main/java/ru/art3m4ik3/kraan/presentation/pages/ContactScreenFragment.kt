@@ -14,6 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.art3m4ik3.kraan.data.models.Message
+import ru.art3m4ik3.kraan.data.storage.Auth
 import ru.art3m4ik3.kraan.data.storage.RetrofitHelper
 import ru.art3m4ik3.kraan.databinding.FragmentContactScreenBinding
 import java.util.regex.Pattern
@@ -65,9 +66,8 @@ class ContactScreenFragment : Fragment() {
             activity?.openLoginFragment()
         }
 
-        // TODO: get auth data from api
-        val authorized = false
-        if (authorized) {
+        val auth = Auth()
+        if (auth.authorized(requireContext())) {
             binding.loginButton.visibility = View.GONE
         } else {
             binding.loginButton.visibility = View.VISIBLE

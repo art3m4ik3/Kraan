@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import ru.art3m4ik3.kraan.data.storage.Auth
 import ru.art3m4ik3.kraan.databinding.FragmentLoginScreenBinding
 
 
@@ -87,20 +88,18 @@ class LoginScreenFragment : Fragment() {
             return
         }
 
-        if (validateInput() == false) {
-            return
-        }
+        val auth = Auth(
+            binding.usernameEditText.text.toString().trim(),
+            binding.passwordEditText.text.toString().trim()
+        )
 
-        // TODO: get auth data from api
-        val token = "token"
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        val token = auth.getNewToken()
         with(sharedPref.edit()) {
             putString("AUTH_TOKEN", token)
             apply()
         }
-
         Toast.makeText(context, "Вход выполнен. Перезапустите приложение", Toast.LENGTH_LONG).show()
-        System.exit(0)
     }
 
     private fun validateInput(): Boolean {
@@ -110,15 +109,6 @@ class LoginScreenFragment : Fragment() {
         val password = binding.passwordEditText.text.toString().trim()
         val confirmPassword = binding.confirmPasswordEditText.text.toString().trim()
 
-        val lengthValid = password.length in 6..32
-        val hasUpperCase = password.any { it.isUpperCase() }
-        val hasLowerCase = password.any { it.isLowerCase() }
-        val hasDigit = password.any { it.isDigit() }
-        val hasSpecialChar = password.any { it in "!@#$%^&*()_+-=[]{}|;:'\",.<>?/" }
-
-        val isValidPassword =
-            lengthValid && hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar
-
         if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             showError("Все поля должны быть заполнены")
             return false
@@ -126,13 +116,6 @@ class LoginScreenFragment : Fragment() {
 
         if (password != confirmPassword) {
             showError("Пароли не совпадают")
-            return false
-        }
-
-        val passwordRegex =
-            "^[a-zA-Z0-9!@#\$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]{6,32}\$".toRegex()
-        if (!passwordRegex.matches(password) || !isValidPassword) {
-            showError("Пароль не соответствует требованиям")
             return false
         }
 

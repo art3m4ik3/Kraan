@@ -24,6 +24,7 @@ class LogoutScreenFragment : Fragment() {
                 activity?.getPreferences(Context.MODE_PRIVATE) ?: return@setOnClickListener
             with(sharedPref.edit()) {
                 clear()
+                apply()
             }
 
             Toast.makeText(context, "Успешный выход.", Toast.LENGTH_SHORT).show()

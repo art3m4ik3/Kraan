@@ -1,10 +1,9 @@
 package ru.art3m4ik3.kraan.presentation.pages
 
-import android.content.Context
 import android.os.Bundle
-import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import ru.art3m4ik3.kraan.R
+import ru.art3m4ik3.kraan.data.storage.Auth
 import ru.art3m4ik3.kraan.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,10 +15,8 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // TODO: get auth data from api
-        val authorized = true
-        // isTokenValid()
-        if (authorized) {
+        val auth = Auth()
+        if (auth.authorized(this)) {
             binding.bottomNavigationView.menu.removeItem(R.id.navigation_login)
         } else {
             binding.bottomNavigationView.menu.removeItem(R.id.navigation_logout)
@@ -69,15 +66,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    fun isTokenValid(): Boolean {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
-        val token = sharedPref.getString("AUTH_TOKEN", null)
-
-        // TODO: get auth data from api
-
-        return token != null
     }
 
     fun openLoginFragment() {
